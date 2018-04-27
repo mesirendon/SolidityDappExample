@@ -32,8 +32,10 @@ $ yarn add -D chai chai-as-promise
 
 Some configurations have to be done in this project to get it working.
 
-1. Pointing which blockchain network must be used in development (`truffle.js` file).
+- Pointing which blockchain network must be used in development (`truffle.js` file).
+
 This tells truffle which network it has to use.
+
 ```JavaScript
 module.exports = {
   // See <http://truffleframework.com/docs/advanced/configuration>
@@ -47,3 +49,27 @@ module.exports = {
   }
 };
 ```
+
+- Defining the way contracts have to be deployed (`migrations/2_deploy_contracts.js`).
+
+The contracts required here will reside into `contracts/`.
+
+```JavaScript
+var Contract1 = artifacts.require("./Contract1.sol");
+var Contract2 = artifacts.require("./Contract2.sol");
+// ...
+var ContractN = artifacts.require("./ContractN.sol");
+
+module.exports = function(deployer) {
+  deployer.deploy(Contract1);
+  deployer.deploy(Contract2);
+  // ...
+  deployer.deploy(ContractN);
+};
+```
+
+## Testing
+
+Tests are executed via `truffle test`. Those are executed lexicographically, so I recommend using the format `test/XX-test.js`, where `XX` are numbers starting at `01`.
+
+Tests, as shown in the packages installations, are run using [Chai](http://www.chaijs.com/). Hence, the idea is to write a single test and testing against the code.
